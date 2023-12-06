@@ -1,7 +1,9 @@
 advent_of_code::solution!(4);
-use std::{str::FromStr, collections::HashMap};
+use std::collections::HashMap;
+use std::str::FromStr;
 
 use advent_of_code::repository::scratchcard;
+
 
 pub fn part_one(input: &str) -> Option<u32> {
     let mut result: u32 = 0;

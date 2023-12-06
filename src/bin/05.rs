@@ -1,6 +1,6 @@
 advent_of_code::solution!(5);
-use std::str::FromStr;
 
+use std::str::FromStr;
 use advent_of_code::repository::almanac;
 
 
@@ -11,7 +11,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 
 pub fn part_two(input: &str) -> Option<u32> {
     let mut almanac = almanac::Almanac::from_str(input).unwrap();
-    Some(almanac.calculate_seed_locations())
+    Some(almanac.calculate_seed_range_locations())
 }
 
 #[cfg(test)]
