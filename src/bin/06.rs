@@ -1,4 +1,5 @@
 advent_of_code::solution!(6);
+
 use advent_of_code::repository::race;
 
 

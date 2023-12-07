@@ -1,4 +1,3 @@
-use std::str::{FromStr};
 
 
 #[derive(Debug)]
@@ -20,14 +19,6 @@ impl Race {
         }
 
         result
-    }
-}
-
-impl FromStr for Race {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self{ time: 1, distance: 1})
     }
 }
 
