@@ -5,3 +5,5 @@ pub mod scratchcard;
 pub mod almanac;
 pub mod race;
 pub mod camel;
+pub mod map;
+pub mod extrapolate;
