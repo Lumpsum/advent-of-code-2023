@@ -7,3 +7,4 @@ pub mod race;
 pub mod camel;
 pub mod map;
 pub mod extrapolate;
+pub mod pipe;
