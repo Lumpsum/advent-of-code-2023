@@ -1,9 +1,9 @@
-use std::{str::FromStr, collections::{VecDeque, HashSet, HashMap}};
+use std::{str::FromStr, collections::{VecDeque, HashSet, HashMap}, cmp::min};
 
 #[derive(Debug)]
 pub struct PipeNetwork {
-    grid: Vec<Vec<char>>,
-    starting_point: (i32, i32)
+    pub grid: Vec<Vec<char>>,
+    pub starting_point: (i32, i32)
 }
 
 impl FromStr for PipeNetwork {
@@ -39,11 +39,25 @@ enum Direction {
 
 pub struct Graph {
     nodes: HashSet<(i32, i32)>,
-    edges: HashMap<(i32, i32), HashSet<(i32, i32)>>,
-    pub result: u32
+    pub result: u32,
+    pub horizontal_edges: HashMap<i32, HashSet<i32>>,
+    pub vertical_edges: HashMap<i32, HashSet<i32>>
 }
 
 impl Graph {
+    fn get_options(c: &char) -> Vec<(i32, i32, Direction)> {
+        match c {
+            '|' => return vec![(0, -1, Direction::UP), (0, 1, Direction::DOWN)],
+            '-' => return vec![(-1, 0, Direction::LEFT), (1, 0, Direction::RIGHT)],
+            'L' => return vec![(0, -1, Direction::UP), (1, 0, Direction::RIGHT)],
+            'J' => return vec![(0, -1, Direction::UP), (-1, 0, Direction::LEFT)],
+            '7' => return vec![(0, 1, Direction::DOWN), (-1, 0, Direction::LEFT)],
+            'F' => return vec![(0, 1, Direction::DOWN), (1, 0, Direction::RIGHT)],
+            'S' => return vec![(0, -1, Direction::UP), (0, 1, Direction::DOWN), (-1, 0, Direction::LEFT), (1, 0, Direction::RIGHT)],
+            _ => return vec![]
+        }
+    }
+
     fn valid_node(symbol: char, direction: Direction) -> bool {
         match direction {
             Direction::UP => {
@@ -80,17 +94,70 @@ impl Graph {
             }
         }
     }
+
+    pub fn point_in_polygon(&self, point: (i32, i32)) -> bool {
+        if self.nodes.contains(&point) {
+            return false
+        }
+
+        match self.horizontal_edges.get(&point.0) {
+            Some(v) => {
+                if (v.iter().filter(|&c| c < &point.1).count() == 0) || (v.iter().filter(|&c| c > &point.1).count() == 0) {
+                    return false
+                }
+            },
+            None => ()
+        }
+
+        match self.vertical_edges.get(&point.1) {
+            Some(v) => {
+                if v.iter().filter(|&c| c < &point.0).count() == 0 {
+                    return false
+                }
+
+                let mut edges = 0;
+                let mut up = 0;
+                let mut down = 0;
+
+                v.iter().filter(|&c| c > &point.0).collect::<Vec<&i32>>().into_iter().for_each(|vertice| {
+                    let mut total = 0;
+                    match self.nodes.get(&(vertice.clone(), (point.1 - 1))) {
+                        Some(_) => {
+                            total += 1;
+                            up += 1;
+                        },
+                        None => ()
+                    }
+
+                    match self.nodes.get(&(vertice.clone(), (point.1 + 1))) {
+                        Some(_) => {
+                            total += 1;
+                            down += 1;
+                        },
+                        None => ()
+                    }
+
+                    if total == 2 {
+                        edges += 1;
+                        up -= 1;
+                        down -= 1;
+                    }
+                });
+
+                edges += min(up, down);
+                return edges % 2 != 0
+            },
+            None => return false
+        }
+    }
 }
 
-impl From<PipeNetwork> for Graph {
-    fn from(value: PipeNetwork) -> Self {
-        let options: Vec<(i32, i32, Direction)> = vec![
-            (0, -1, Direction::UP), (0, 1, Direction::DOWN),
-            (-1, 0, Direction::LEFT), (1, 0, Direction::RIGHT)
-        ];
+impl From<&PipeNetwork> for Graph {
+    fn from(value: &PipeNetwork) -> Self {
         let mut queue: VecDeque<Vec<(i32, i32)>> = VecDeque::new();
         let mut visited: HashSet<(i32, i32)> = HashSet::new();
-        let mut edges: HashMap<(i32, i32), HashSet<(i32, i32)>> = HashMap::new();
+        let mut vertical_edges: HashMap<i32, HashSet<i32>> = HashMap::new();
+        let mut horizontal_edges: HashMap<i32, HashSet<i32>> = HashMap::new();
         queue.push_back(vec![value.starting_point]);
         visited.insert(value.starting_point);
 
@@ -100,7 +167,7 @@ impl From<PipeNetwork> for Graph {
             let mut new_nodes: Vec<(i32, i32)> = Vec::new();
 
             for node in v {
-                for option in options.clone() {
+                for option in Graph::get_options(value.grid.get(node.1 as usize).unwrap().get(node.0 as usize).unwrap()) {
                     let i = node.0 + option.0;
                     let j = node.1 + option.1;
 
@@ -110,10 +177,23 @@ impl From<PipeNetwork> for Graph {
                                 Some(c) => {
                                     match Self::valid_node(*c, option.2) {
                                         true => {
-                                            edges.entry(node).or_insert(HashSet::new()).insert((i, j));
+
+                                            match ((node.0 - i).abs(), (node.1 - j).abs()) {
+                                                (0, 1) => {
+                                                    vertical_edges.entry(node.1).or_insert(HashSet::new()).insert(node.0);
+                                                    vertical_edges.entry(j).or_insert(HashSet::new()).insert(i);
+                                                },
+                                                (1, 0) => {
+                                                    horizontal_edges.entry(node.0).or_insert(HashSet::new()).insert(node.1);
+                                                    horizontal_edges.entry(i).or_insert(HashSet::new()).insert(j);
+                                                },
+                                                _ => ()
+                                            };
+
                                             match visited.insert((i, j)) {
                                                 true => {
-                                                    new_nodes.push((i, j))
+                                                    new_nodes.push((i, j));
+
                                                 },
                                                 false => ()
                                             }
@@ -135,10 +215,12 @@ impl From<PipeNetwork> for Graph {
             }
         }
 
+
         Self{
             nodes: visited,
-            edges: edges,
-            result: result
+            result: result,
+            vertical_edges: vertical_edges,
+            horizontal_edges: horizontal_edges
         }
     }
 }
