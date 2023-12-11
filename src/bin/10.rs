@@ -23,13 +23,6 @@ pub fn part_two(input: &str) -> Option<u32> {
         }
     }
 
-    // println!("{:?}", graph.horizontal_edges);
-    // println!("{:?}", graph.point_in_polygon((7, 4)));
-    // println!("{:?}", graph.point_in_polygon((8, 4)));
-    // println!("{:?}", graph.point_in_polygon((9, 4)));
-    // println!("{:?}", graph.point_in_polygon((3, 2)));
-
-    // 518 too high
     Some(result)
 }
 
