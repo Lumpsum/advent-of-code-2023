@@ -18,14 +18,16 @@ pub fn part_two(input: &str) -> Option<u32> {
     for j in pipe_network.grid.iter().enumerate() {
         for i in j.1.iter().enumerate() {
             if graph.point_in_polygon((i.0 as i32, j.0 as i32)) {
-                println!("{:?}", (i.0, j.0));
                 result += 1
             }
         }
     }
 
     // println!("{:?}", graph.horizontal_edges);
-    // println!("{:?}", graph.point_in_polygon((5, 7)));
+    // println!("{:?}", graph.point_in_polygon((7, 4)));
+    // println!("{:?}", graph.point_in_polygon((8, 4)));
+    // println!("{:?}", graph.point_in_polygon((9, 4)));
+    // println!("{:?}", graph.point_in_polygon((3, 2)));
 
     // 518 too high
     Some(result)
@@ -44,6 +46,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, Some(10));
+        assert_eq!(result, Some(8));
     }
 }
