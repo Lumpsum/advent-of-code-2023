@@ -9,3 +9,4 @@ pub mod map;
 pub mod extrapolate;
 pub mod pipe;
 pub mod galaxy;
+pub mod arrangement;

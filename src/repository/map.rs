@@ -44,9 +44,8 @@ impl Maps<'_> {
         let route_length = self.route.clone().len();
         let mut path_lengths: Vec<u64> = Vec::new();
 
-        let mut steps: u64 = 0;
         for current_map in self.starter_maps.clone().iter_mut() {
-            steps = 0;
+            let mut steps: u64 = 0;
             'outer: loop {
                 for i in 0..route_length {
                     let step = self.route[i];
