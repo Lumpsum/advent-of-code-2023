@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use advent_of_code::repository::arrangement::{ConditionRecord, find_solutions};
 use itertools::Itertools;
 
@@ -8,11 +6,11 @@ advent_of_code::solution!(12);
 
 pub fn part_one(input: &str) -> Option<u32> {
     let condition_records = input.lines().map(|s| ConditionRecord::from(s)).collect_vec();
-    find_solutions(condition_records);
-    None
+    // 6093 too low
+    Some(find_solutions(condition_records))
 }
 
-pub fn part_two(input: &str) -> Option<u32> {
+pub fn part_two(_input: &str) -> Option<u32> {
     None
 }
 
