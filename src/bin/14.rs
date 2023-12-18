@@ -1,7 +1,12 @@
+use std::str::FromStr;
+
+use advent_of_code::repository::dish::Dish;
+
 advent_of_code::solution!(14);
 
-pub fn part_one(_input: &str) -> Option<u32> {
-    None
+pub fn part_one(input: &str) -> Option<u32> {
+    let dish = Dish::from_str(input).unwrap();
+    Some(dish.tilt_north())
 }
 
 pub fn part_two(_input: &str) -> Option<u32> {
