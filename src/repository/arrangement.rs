@@ -1,6 +1,9 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, str::Chars};
+use memoize::memoize;
 
 use itertools::{Itertools, repeat_n};
+
+use crate::template::commands::solve;
 
 
 #[derive(Debug)]
@@ -54,14 +57,13 @@ pub fn find_solutions(conditions_records: Vec<ConditionRecord>) -> u32 {
                             value *= *x.1;
                         }
 
-                        result.insert(combination, value);
+                        *result.entry(combination).or_insert(0) += value;
                     }
 
                     memory.insert(seqs, result);
                 }
             }
         }
-
         result += memory.get(&last_element).unwrap().get(&condition_record.damaged_springs).unwrap();
     }
     result
@@ -94,4 +96,56 @@ fn add_memory<'a>(l: usize, seq: &'a str, mut memory: HashMap<Vec<&'a str>, Hash
         ).or_insert(0) += 1;
     }
     memory
+}
+
+
+pub fn repeat_string(mut s: String, repeat: usize, seperator: &str) -> String {
+    s.push_str(seperator);
+    let mut result = s.repeat(repeat);
+    result.pop();
+    result
+}
+
+
+#[memoize]
+pub fn solve_sequence(mut input: String, mut springs: Vec<u32>) -> u64 {
+    if springs.is_empty() {
+        if input.contains('#') {
+            return 0
+        }
+        return 1
+    }
+
+    let mut chars = input.chars();
+    match chars.next() {
+        Some(v) => {
+            match v {
+                '#' => {
+                    let group = springs[0] as usize;
+                    let char_length = chars.clone().count() + 1;
+                    if char_length >= group &&
+                        chars.clone().take(group - 1).filter(|&s| s == '.').count() == 0 &&
+                        (char_length == group || chars.clone().nth(group - 1).unwrap_or('#') != '#') {
+                            springs.remove(0);
+                            return solve_sequence(chars.skip(group).collect(), springs)
+                    }
+                    return 0
+                },
+                '.' => return solve_sequence(chars.into_iter().collect(), springs),
+                '?' => {
+                    let option_one = format!(".{}", chars.clone().as_str());
+                    let option_two = format!("#{}", chars.clone().as_str());
+                    return solve_sequence(option_one, springs.clone())
+                        + solve_sequence(option_two, springs)
+                }
+                _ => return 0
+            }
+        },
+        None => {
+            if springs.is_empty() {
+                return 1
+            }
+            return 0
+        }
+    }
 }
