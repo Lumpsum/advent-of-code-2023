@@ -1,16 +1,20 @@
 use std::str::FromStr;
 
-use advent_of_code::repository::dish::Dish;
+use advent_of_code::repository::dish::{Direction, Platform};
+use itertools::Itertools;
 
 advent_of_code::solution!(14);
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let dish = Dish::from_str(input).unwrap();
-    Some(dish.tilt_north())
+    let mut platform = Platform::from_str(input).unwrap();
+    platform.tilt(Direction::NORTH);
+    Some(platform.total_load(Direction::NORTH))
 }
 
-pub fn part_two(_input: &str) -> Option<u32> {
-    None
+pub fn part_two(input: &str) -> Option<u32> {
+    let mut platform = Platform::from_str(input).unwrap();
+    platform.cycle_n_times(1000000000);
+    Some(platform.total_load(Direction::NORTH))
 }
 
 #[cfg(test)]
@@ -26,6 +30,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(64));
     }
 }
