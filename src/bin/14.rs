@@ -1,7 +1,6 @@
 use std::str::FromStr;
 
-use advent_of_code::repository::dish::{Direction, Platform};
-use itertools::Itertools;
+use advent_of_code::repository::platform::{Direction, Platform};
 
 advent_of_code::solution!(14);
 

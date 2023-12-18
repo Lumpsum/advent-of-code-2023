@@ -11,4 +11,4 @@ pub mod pipe;
 pub mod galaxy;
 pub mod arrangement;
 pub mod mirror;
-pub mod dish;
+pub mod platform;

@@ -1,4 +1,4 @@
-use std::{str::FromStr, collections::{HashMap, HashSet}};
+use std::{str::FromStr, collections::HashMap};
 
 use itertools::Itertools;
 
@@ -11,7 +11,7 @@ pub enum Direction {
 }
 
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct RoundRockSet(pub Vec<(isize, isize)>);
 impl RoundRockSet {
     fn new() -> Self {
@@ -19,11 +19,9 @@ impl RoundRockSet {
     }
 }
 
-#[derive(Debug)]
 struct CubeRockSet(Vec<(isize, isize)>);
 
 
-#[derive(Debug)]
 pub struct Platform {
     pub round_rocks: RoundRockSet,
     cube_rocks: CubeRockSet,
