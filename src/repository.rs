@@ -10,3 +10,4 @@ pub mod extrapolate;
 pub mod pipe;
 pub mod galaxy;
 pub mod arrangement;
+pub mod mirror;
