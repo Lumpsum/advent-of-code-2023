@@ -5,14 +5,22 @@ use advent_of_code::repository::mirror::Mirror;
 advent_of_code::solution!(13);
 
 pub fn part_one(input: &str) -> Option<u32> {
-    for mirror in input.split("\r\n\r\n") {
-        Mirror::from_str(mirror);
+    let mut result = 0;
+    for mirror in input.split("\n\n") {
+        let mirror = Mirror::from_str(mirror).unwrap();
+        result += mirror.find_mirror();
     }
-    None
+    Some(result)
 }
 
-pub fn part_two(_input: &str) -> Option<u32> {
-    None
+pub fn part_two(input: &str) -> Option<u32> {
+    let mut result = 0;
+    for mirror in input.split("\n\n") {
+        let mirror = Mirror::from_str(mirror).unwrap();
+        let new_value = mirror.find_mirror_smudge();
+        result += new_value;
+    }
+    Some(result)
 }
 
 #[cfg(test)]
@@ -28,6 +36,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(400));
     }
 }
