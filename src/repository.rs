@@ -12,3 +12,4 @@ pub mod galaxy;
 pub mod arrangement;
 pub mod mirror;
 pub mod platform;
+pub mod hash;

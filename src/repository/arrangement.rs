@@ -108,7 +108,7 @@ pub fn repeat_string(mut s: String, repeat: usize, seperator: &str) -> String {
 
 
 #[memoize]
-pub fn solve_sequence(mut input: String, mut springs: Vec<u32>) -> u64 {
+pub fn solve_sequence(input: String, mut springs: Vec<u32>) -> u64 {
     if springs.is_empty() {
         if input.contains('#') {
             return 0
