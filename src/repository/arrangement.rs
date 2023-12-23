@@ -1,9 +1,7 @@
-use std::{collections::HashMap, str::Chars};
+use std::collections::HashMap;
 use memoize::memoize;
 
 use itertools::{Itertools, repeat_n};
-
-use crate::template::commands::solve;
 
 
 #[derive(Debug)]

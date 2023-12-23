@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use itertools::Itertools;
 
 pub struct Sequence<'a>(pub &'a str);
 
