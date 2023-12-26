@@ -14,3 +14,4 @@ pub mod mirror;
 pub mod platform;
 pub mod hash;
 pub mod beam;
+pub mod crucible;
