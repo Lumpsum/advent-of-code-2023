@@ -16,3 +16,4 @@ pub mod hash;
 pub mod beam;
 pub mod crucible;
 pub mod lagoon;
+pub mod workflow;
