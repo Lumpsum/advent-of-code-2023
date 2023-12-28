@@ -17,3 +17,4 @@ pub mod beam;
 pub mod crucible;
 pub mod lagoon;
 pub mod workflow;
+pub mod pulse;
