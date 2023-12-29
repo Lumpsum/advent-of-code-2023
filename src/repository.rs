@@ -20,3 +20,4 @@ pub mod workflow;
 pub mod pulse;
 pub mod steps;
 pub mod slabs;
+pub mod walk;
