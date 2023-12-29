@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use advent_of_code::repository::walk::{Graph, Grid, Node};
 
 advent_of_code::solution!(23);

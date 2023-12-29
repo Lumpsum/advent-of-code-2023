@@ -27,7 +27,7 @@ pub struct Broadcaster<'a> {
 }
 
 impl<'a> ProcessPulse<'a> for Broadcaster<'a> {
-    fn process_pulse(&mut self, pulse: Pulse, sender: &'a str) -> Option<Vec<(&'a str, Pulse)>> {
+    fn process_pulse(&mut self, _pulse: Pulse, _sender: &'a str) -> Option<Vec<(&'a str, Pulse)>> {
         Some(self.destinations.iter().map(|&d| (d, Pulse::Low)).collect_vec())
     }
 

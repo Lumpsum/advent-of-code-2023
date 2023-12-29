@@ -1,4 +1,4 @@
-use std::{str::FromStr, collections::{HashSet, VecDeque, HashMap}};
+use std::collections::{HashSet, VecDeque, HashMap};
 
 use itertools::Itertools;
 
@@ -150,13 +150,6 @@ pub struct Node {
     pub y: usize
 }
 
-#[derive(Debug)]
-pub struct Edge {
-    from: Node,
-    to: Node,
-    cost: usize
-}
-
 pub struct Graph {
     pub nodes: Vec<Node>,
     pub edges: HashMap<Node, Vec<(Node, usize)>>
@@ -168,7 +161,7 @@ impl Graph {
         q.push_front((vec![starting_node], 0));
         let mut valid_paths = Vec::new();
 
-        while let Some((mut nodes, cost)) = q.pop_front() {
+        while let Some((nodes, cost)) = q.pop_front() {
             let last_node = nodes.last().unwrap();
             if last_node == &end_node {
                 valid_paths.push(cost);
