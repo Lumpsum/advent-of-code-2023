@@ -19,3 +19,4 @@ pub mod lagoon;
 pub mod workflow;
 pub mod pulse;
 pub mod steps;
+pub mod slabs;
