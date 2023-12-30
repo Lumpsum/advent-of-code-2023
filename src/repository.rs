@@ -21,3 +21,5 @@ pub mod pulse;
 pub mod steps;
 pub mod slabs;
 pub mod walk;
+pub mod hailstorm;
+pub mod snowverload;
